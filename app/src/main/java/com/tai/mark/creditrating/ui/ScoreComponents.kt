@@ -1,5 +1,6 @@
 package com.tai.mark.creditrating.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -24,9 +25,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tai.mark.creditrating.R
+import com.tai.mark.creditrating.ui.SummaryTestTags.MAX_SCORE
+import com.tai.mark.creditrating.ui.SummaryTestTags.SCORE
 import com.tai.mark.creditrating.ui.theme.CreditRatingTheme
 import com.tai.mark.creditrating.ui.theme.ScoreColours
 import kotlin.math.roundToInt
@@ -67,10 +74,9 @@ fun CreditScoreSummary(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .align(Center)
-                    .padding(50.dp)
             ) {
                 Text(
-                    text = "Your credit score is",
+                    text = stringResource(R.string.credit_score_prefix),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall,
                 )
@@ -78,15 +84,17 @@ fun CreditScoreSummary(
                     text = score.toString(),
                     color = scoreProgress.toTextColor(),
                     style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.testTag(SCORE),
                 )
                 Text(
-                    text = "out of 700",
+                    text = stringResource(R.string.credit_score_suffix, maxScore),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.testTag(MAX_SCORE),
                 )
             }
         },
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {}, // Ensure rating summary is read out as one string
     )
 }
 
@@ -159,4 +167,12 @@ fun LoadingPreview() {
             modifier = Modifier.padding(5.dp)
         )
     }
+}
+
+@VisibleForTesting
+object SummaryTestTags {
+    private const val PREFIX = "summary_"
+
+    const val SCORE = "${PREFIX}score"
+    const val MAX_SCORE = "${PREFIX}max_score"
 }

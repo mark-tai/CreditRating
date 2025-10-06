@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Credit Rating</string>
+    <string name="title">Credit Rating</string>
+    <string name="load_error">Error loading data please try again later</string>
+    <string name="credit_score_prefix">Your credit score is</string>
+    <string name="credit_score_suffix">out of %1$d</string>
 </resources>

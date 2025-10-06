@@ -2,7 +2,7 @@ package com.tai.mark.creditrating.data
 
 import com.tai.mark.creditrating.data.network.CreditReportInfo
 import com.tai.mark.creditrating.data.network.NetworkDataSource
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 interface CreditRatingRepository {
@@ -13,11 +13,11 @@ interface CreditRatingRepository {
 class CreditRatingRepositoryImpl(
     private val localDataSource: LocalDataSource,
     private val networkDataSource: NetworkDataSource,
-    private val coroutineScope: CoroutineScope,
+    private val dispatcher: CoroutineDispatcher,
 ) : CreditRatingRepository {
 
     override suspend fun loadCreditRating(): CreditRating =
-        withContext(coroutineScope.coroutineContext) {
+        withContext(dispatcher) {
             localDataSource.getRating() ?: loadFromNetwork()
         }
 

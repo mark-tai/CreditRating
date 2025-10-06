@@ -1,12 +1,12 @@
 package com.tai.mark.creditrating.data
 
 import com.tai.mark.creditrating.data.network.NetworkDataSource
-import com.tai.mark.creditrating.di.ApplicationScope
+import com.tai.mark.creditrating.di.IoDispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -23,11 +23,11 @@ object DataModule {
     fun provideRepository(
         localDataSource: LocalDataSource,
         networkDataSource: NetworkDataSource,
-        @ApplicationScope coroutineScope: CoroutineScope,
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): CreditRatingRepository =
         CreditRatingRepositoryImpl(
             localDataSource = localDataSource,
             networkDataSource = networkDataSource,
-            coroutineScope,
+            dispatcher,
         )
 }

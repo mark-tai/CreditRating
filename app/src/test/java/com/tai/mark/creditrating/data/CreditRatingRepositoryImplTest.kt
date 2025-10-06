@@ -3,7 +3,6 @@ package com.tai.mark.creditrating.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -19,11 +18,10 @@ class CreditRatingRepositoryImplTest {
     private val networkDataSource = StubNetworkDataSource()
 
     private val dispatcher = StandardTestDispatcher()
-    private val testCoroutineScope = TestScope(dispatcher)
     private val repository = CreditRatingRepositoryImpl(
         localDataSource = localDataSource,
         networkDataSource = networkDataSource,
-        coroutineScope = testCoroutineScope,
+        dispatcher = dispatcher,
     )
 
     @BeforeEach
